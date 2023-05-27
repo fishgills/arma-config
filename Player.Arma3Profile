@@ -6,17 +6,17 @@ class DifficultyPresets
 		{
 			/* Simulation */
 
-			reducedDamage = 0;		// Reduced damage
+			reducedDamage = 1;		// Reduced damage
 
 			/* Situational awareness */
 
-			groupIndicators = 1;	// Group indicators (0 = never, 1 = limited distance, 2 = always)
+			groupIndicators = 2;	// Group indicators (0 = never, 1 = limited distance, 2 = always)
 			friendlyTags = 2;		// Friendly name tags (0 = never, 1 = limited distance, 2 = always)
 			enemyTags = 0;			// Enemy name tags (0 = never, 1 = limited distance, 2 = always)
-			detectedMines = 1;		// Detected mines (0 = never, 1 = limited distance, 2 = always)
+			detectedMines = 2;		// Detected mines (0 = never, 1 = limited distance, 2 = always)
 			commands = 2;			// Commands (0 = never, 1 = fade out, 2 = always)
 			waypoints = 2;			// Waypoints (0 = never, 1 = fade out, 2 = always)
-			tacticalPing = 1;		// Tactical ping (0 = disable, 1 = enable)
+			tacticalPing = 0;		// Tactical ping (0 = disable, 1 = enable)
 
 			/* Personal awareness */
 
@@ -24,7 +24,7 @@ class DifficultyPresets
 			stanceIndicator = 2;	// Stance indicator (0 = never, 1 = fade out, 2 = always)
 			staminaBar = 1;			// Stamina bar
 			weaponCrosshair = 1;	// Weapon crosshair
-			visionAid = 0;			// Vision aid
+			visionAid = 1;			// Vision aid
 
 			/* View */
 
@@ -40,8 +40,8 @@ class DifficultyPresets
 			/* Misc */
 
 			mapContent = 0;			// Extended map content
-			autoReport = 0;			// (former autoSpot) Automatic reporting of spotted enemied by players only. This doesn't have any effect on AIs.
-			multipleSaves = 0;		// Multiple saves
+			autoReport = 1;			// (former autoSpot) Automatic reporting of spotted enemied by players only. This doesn't have any effect on AIs.
+			multipleSaves = 1;		// Multiple saves
 		};
 		
 		// aiLevelPreset defines AI skill level and is counted from 0 and can have following values: 0 (Low), 1 (Normal), 2 (High), 3 (Custom).
@@ -51,7 +51,7 @@ class DifficultyPresets
 
 	class CustomAILevel
 	{
-		skillAI = 0.4;
-		precisionAI = 0.4;
-	}
+		skillAI = 0.5;
+		precisionAI = 0.5;
+	};
 };

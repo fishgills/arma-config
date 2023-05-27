@@ -1,17 +1,20 @@
+#!/usr/bin/python3
+
 import os
 import stat
 import subprocess
 import shutil
 from pathlib import Path
-SERVER_DIR = "/home/fishgills/.steam/steam/steamapps/common/Arma 3 Server/"
-WORKSHOP_DIR = "/home/fishgills/.steam/steam/steamapps/workshop/content/107410/"
+SERVER_DIR = "/mnt/disks/games/arma/"
+WORKSHOP_DIR = "/mnt/disks/games/arma/steamapps/workshop/content/107410/"
 MOD_DIR = os.path.join(os.getcwd(), "mods")
 
 SERVER_ID = 233780
 ARMA_ID = 107410
-STARTUP = "./arma3server_x64 -ip=0.0.0.0 -enableHT -profiles=./serverprofile -bepath=./ -cfg=basic.cfg -config=server.cfg -mod=\"%s\""
-#mod_ids = [2794721649,2791403093,2257686620,450814997,2886141254,861133494,1804716719,1808723766,925018569]
-mod_ids = []
+STARTUP = "tmux new-session -s arma -d ./arma3server_x64 -ip=0.0.0.0 -enableHT -name=ServerProfile -profiles=./serverprofile -cfg=basic.cfg -config=server.cfg -mod=\"{mods}\"\n"
+HC_STARTUP = "tmux split-window -v -d -t arma ./arma3server_x64 -client -connect=localhost -password=poop -profile=HC_{index} -name=HC_{index} -mod=\"{mods}\"\n"
+
+mod_ids = [428181330, 1804716719, 1808723766, 2791403093, 861133494, 925018569, 2794721649]
 
 def listModDir():
     mod_dir = os.listdir(WORKSHOP_DIR)
@@ -73,7 +76,7 @@ for mod_to_delete in to_delete:
 clearKeys(SERVER_DIR+"keys")
 clearSymLinks(SERVER_DIR)
 
-base_cmds = ["login junk@fishgills.net", f"app_update {SERVER_ID} validate"]
+base_cmds = [f"force_install_dir {SERVER_DIR}", "login junk@fishgills.net", f"app_update {SERVER_ID} validate"]
 steam_cmds = ["steamcmd"]
 
 for mod in mod_ids:
@@ -97,14 +100,17 @@ for mod in installed_mods:
 
 print("Mods installed: ", installed_mods)
 
-startup_command = STARTUP % (";".join(startup_mods))
+startup_command = STARTUP.format(mods=";".join(startup_mods))
 
 with open(SERVER_DIR+"/start.sh", 'w') as file:
     file.write("#!/bin/bash\n")
-    file.write(startup_command+"\n")
+    file.write(startup_command)
+    file.write("sleep 20\n")
+    for i in range(2):
+        file.write(HC_STARTUP.format(index=i,mods=";".join(startup_mods)))
 
 st = os.stat(SERVER_DIR+"/start.sh")
 os.chmod(SERVER_DIR+"/start.sh", st.st_mode | stat.S_IEXEC)
 shutil.copy("./basic.cfg", SERVER_DIR+"/basic.cfg")
 shutil.copy("./server.cfg", SERVER_DIR+"/server.cfg")
-shutil.copy("./Player.Arma3Profile", SERVER_DIR+"serverprofile/home/Player/Player.Arma3Profile")
+shutil.copy("./Player.Arma3Profile", SERVER_DIR+"serverprofile/home/ServerProfile/ServerProfile.Arma3Profile")
